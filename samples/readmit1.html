@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Line Chart</title>
+    <script src="../Chart.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+    <div style="width:50%">
+      <div>
+	<canvas id="canvas" height="450" width="600"></canvas>
+      </div>
+    </div>
+    <div id="right">
+    Hello  
+    </div>
+    </div>
+
+    <script>
+      var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+      var lineChartData = {
+      labels : ["Week 1","Week 2", "Week 3", "Week 4", "Week 5","Week 6"],
+      datasets : [
+      {
+      label: "Readmission probability",
+      fillColor : "rgba(220,220,220,0.2)",
+      strokeColor : "rgba(220,220,220,1)",
+      <!-- pointColor : "rgba(220,220,220,1)", -->
+      pointColor : "rgba(255, 44, 44, 0.9)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(220,220,220,1)",
+      data : [0.2,0.46,0.74,0.6,0.53,0.4]
+      
+      },
+      {
+      label: "Upper bounds",
+      fillColor : "rgba(151,187,205,0.2)",
+      strokeColor : "rgba(151,187,205,1)",
+      pointColor : "rgba(151,187,205,1)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(151,187,205,1)",
+      data : [0.259,0.5,0.756,0.68,0.625,0.443]									  
+      },		
+      {
+      label: "Lower bounds",
+      fillColor : "rgba(255,255,255,1)",
+      strokeColor : "rgba(215, 40, 40, 0.9);",
+      pointColor : "rgba(151,187,205,1)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(151,187,205,1)",
+      data : [0.105,0.365,0.645,0.505,0.435,0.305]									  
+      }		
+      ] <!-- end datasets -->
+
+      }
+
+      window.onload = function(){
+      var ctx = document.getElementById("canvas").getContext("2d");
+      window.myLine = new Chart(ctx).Line(lineChartData, {
+      responsive: true
+      });
+      }
+
+
+    </script>
+  </body>
+</html>
