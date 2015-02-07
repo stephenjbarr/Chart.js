@@ -44,7 +44,7 @@
       
       },
       {
-      label: "Upper bounds",
+      label: "95% Upper bounds",
       fillColor : "rgba(151,187,205,0.2)",
       strokeColor : "rgba(151,187,205,1)",
       pointColor : "rgba(151,187,205,1)",
@@ -54,7 +54,7 @@
       data : [0.259,0.5,0.756,0.68,0.625,0.443]									  
       },		
       {
-      label: "Lower bounds",
+      label: "95%Lower bounds",
       fillColor : "rgba(255,255,255,1)",
       strokeColor : "rgba(215, 40, 40, 0.9);",
       pointColor : "rgba(151,187,205,1)",
@@ -80,21 +80,51 @@
       var statHeader;
       var statContainer;
 
+
+      var diags = [["Baseline", "Sodium", "High Systolic BP", "Increase in BMI"],
+                   ["Baseline", "Cancer History", "Sodium", "Lab X123"],
+      ["Baseline", "Poor reported sleep quality", "Decrease in appetite", "Lab X123"],
+      ["Baseline", "Sodium", "Decrease in appetite", "Lab X123"],      
+      ["Baseline", "Cancer History", "Sodium", "Lab B1323"],
+      ["Baseline", "Sodium", "High Systolic BP", "Decrease in BMI"]];
+
+      var loadings = [[ 0.034,0.023,0.103,0.041 ],
+[ 0.21,0.106,0.015,0.128 ],
+[ 0.122,0.051,0.357,0.21 ],
+[ 0.077,0.02,0.262,0.24 ],
+[ 0.052,0.148,0.143,0.187 ],
+[ 0.227,0.058,0.028,0.088 ]];
+
       canvas.onclick = function(event) {
           var activePoints = window.myLine.getPointsAtEvent(event);
+
           if(activePoints.length) { // If there are points on the clicked-upon line.
               // Use the below line to view the data.
               // alert(JSON.stringify(activePoints));
               
               // Display a "Data Summary" for the selected week.
               var week = activePoints[0].label;
-              statHeader.innerHTML = "Data Summary: " + week; 
+              var thenum = week.replace( /^\D+/g, '');
+      <!-- statHeader.innerHTML = "Data Summary: " + week; -->
+                    statHeader.innerHTML = "Data Summary: Week " + thenum; 
               statContainer.innerHTML = "";
               for(var index in activePoints) {
                   var point = activePoints[index];
                   statContainer.innerHTML += point.datasetLabel + ": " + point.value + "<br>";
-              }
-          }
+                  <!-- statContainer.innerHTML += "INDEX = " + index + "<br>"; -->      
+              } <!-- end for -->
+
+
+		  statContainer.innerHTML += "<hr>"
+		  statContainer.innerHTML += "<table><tr><td>Factor</td><td>Weight</td></tr>"
+		  for (i = 0; i < 4; i++) {
+				  statContainer.innerHTML += "<tr><td>" + diags[(thenum - 1)][i] + "</td><td> " + loadings[(thenum-1)][i] + "</td></tr><br>";
+
+				  }
+				  statContainer.innerHTML += "</table>";
+
+
+          } <!-- end if -->
           
       };
 
