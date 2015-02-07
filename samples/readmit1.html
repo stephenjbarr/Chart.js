@@ -115,7 +115,8 @@
               } <!-- end for -->
 
 
-		  statContainer.innerHTML += "<hr>"
+		  statContainer.innerHTML += "<hr>";
+		  statContainer.innerHTML += "<h3>Top 4 Factors In Readmission Probability Estimate</h3></br>";
 		  statContainer.innerHTML += "<table><tr><td>Factor</td><td>Weight</td></tr>"
 		  for (i = 0; i < 4; i++) {
 				  statContainer.innerHTML += "<tr><td>" + diags[(thenum - 1)][i] + "</td><td> " + loadings[(thenum-1)][i] + "</td></tr><br>";
