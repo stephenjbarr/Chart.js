@@ -14,6 +14,10 @@
         float: left;
         padding-left: 15px;
       }
+      table tr > * {
+        border: 1px solid black;
+        padding: 5px;
+      }
     </style>
   </head>
   <body>
@@ -23,7 +27,7 @@
       </div>
       <div id="right">
         <h1>Click Any Week For It's Data Summary</h1>
-        <p></p>
+        <div></div>
       </div>
     </div>
     <script>
@@ -54,7 +58,7 @@
       data : [0.259,0.5,0.756,0.68,0.625,0.443]									  
       },		
       {
-      label: "95%Lower bounds",
+      label: "95% Lower bounds",
       fillColor : "rgba(255,255,255,1)",
       strokeColor : "rgba(215, 40, 40, 0.9);",
       pointColor : "rgba(151,187,205,1)",
@@ -74,7 +78,7 @@
         });
         var right = document.getElementById("right");
         statHeader = right.getElementsByTagName("h1")[0];
-        statContainer = right.getElementsByTagName("p")[0];
+        statContainer = right.getElementsByTagName("div")[0];
       }
       
       var statHeader;
@@ -105,26 +109,22 @@
               // Display a "Data Summary" for the selected week.
               var week = activePoints[0].label;
               var thenum = week.replace( /^\D+/g, '');
-      <!-- statHeader.innerHTML = "Data Summary: " + week; -->
-                    statHeader.innerHTML = "Data Summary: Week " + thenum; 
+              <!-- statHeader.innerHTML = "Data Summary: " + week; -->
+              statHeader.innerHTML = "Data Summary: Week " + thenum; 
               statContainer.innerHTML = "";
               for(var index in activePoints) {
                   var point = activePoints[index];
                   statContainer.innerHTML += point.datasetLabel + ": " + point.value + "<br>";
                   <!-- statContainer.innerHTML += "INDEX = " + index + "<br>"; -->      
               } <!-- end for -->
-
-
-		  statContainer.innerHTML += "<hr>";
-		  statContainer.innerHTML += "<h3>Top 4 Factors In Readmission Probability Estimate</h3></br>";
-		  statContainer.innerHTML += "<table><tr><td>Factor</td><td>Weight</td></tr>"
-		  for (i = 0; i < 4; i++) {
-				  statContainer.innerHTML += "<tr><td>" + diags[(thenum - 1)][i] + "</td><td> " + loadings[(thenum-1)][i] + "</td></tr><br>";
-
-				  }
-				  statContainer.innerHTML += "</table>";
-
-
+              statContainer.innerHTML += "<hr>";
+              statContainer.innerHTML += "<h3>Top 4 Factors In Readmission Probability Estimate</h3>";
+              var table = "<table><tbody><tr><th>Factor</th><th>Weight</td></tr>";
+		      for (i = 0; i < 4; i++) {
+                  table += "<tr><td>" + diags[(thenum - 1)][i] + "</td><td> " + loadings[(thenum-1)][i] + "</td></tr>";
+              }
+              table += "</tbody></table>";
+              statContainer.innerHTML += table;
           } <!-- end if -->
           
       };
