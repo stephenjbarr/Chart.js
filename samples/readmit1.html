@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Line Chart</title>
+    <script src="../Chart.js"></script>
+    <style>
+      #left {
+        float: left;
+        width: 50%;
+        border-right: 1px solid black;
+      }
+      #right {
+        width: 40%;
+        float: left;
+        padding-left: 15px;
+      }
+      table tr > * {
+        border: 1px solid black;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="left">
+        <canvas id="canvas" height="450" width="600"></canvas>
+      </div>
+      <div id="right">
+        <h1>Click Any Week For It's Data Summary</h1>
+        <div></div>
+      </div>
+    </div>
+    <script>
+      var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+      var lineChartData = {
+      labels : ["Week 1","Week 2", "Week 3", "Week 4", "Week 5","Week 6"],
+      datasets : [
+      {
+      label: "Readmission probability",
+      fillColor : "rgba(220,220,220,0.2)",
+      strokeColor : "rgba(220,220,220,1)",
+      <!-- pointColor : "rgba(220,220,220,1)", -->
+      pointColor : "rgba(255, 44, 44, 0.9)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(220,220,220,1)",
+      data : [0.2,0.46,0.74,0.6,0.53,0.4]
+      
+      },
+      {
+      label: "95% Upper bounds",
+      fillColor : "rgba(151,187,205,0.2)",
+      strokeColor : "rgba(151,187,205,1)",
+      pointColor : "rgba(151,187,205,1)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(151,187,205,1)",
+      data : [0.259,0.5,0.756,0.68,0.625,0.443]									  
+      },		
+      {
+      label: "95% Lower bounds",
+      fillColor : "rgba(255,255,255,1)",
+      strokeColor : "rgba(215, 40, 40, 0.9);",
+      pointColor : "rgba(151,187,205,1)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(151,187,205,1)",
+      data : [0.105,0.365,0.645,0.505,0.435,0.305]									  
+      }		
+      ] <!-- end datasets -->
+
+      }
+
+      window.onload = function(){
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myLine = new Chart(ctx).Line(lineChartData, {
+            responsive: true
+        });
+        var right = document.getElementById("right");
+        statHeader = right.getElementsByTagName("h1")[0];
+        statContainer = right.getElementsByTagName("div")[0];
+      }
+      
+      var statHeader;
+      var statContainer;
+
+
+      var diags = [["Baseline", "Sodium", "High Systolic BP", "Increase in BMI"],
+                   ["Baseline", "Cancer History", "Sodium", "Lab X123"],
+      ["Baseline", "Poor reported sleep quality", "Decrease in appetite", "Lab X123"],
+      ["Baseline", "Sodium", "Decrease in appetite", "Lab X123"],      
+      ["Baseline", "Cancer History", "Sodium", "Lab B1323"],
+      ["Baseline", "Sodium", "High Systolic BP", "Decrease in BMI"]];
+
+      var loadings = [[ 0.034,0.023,0.103,0.041 ],
+[ 0.21,0.106,0.015,0.128 ],
+[ 0.122,0.051,0.357,0.21 ],
+[ 0.077,0.02,0.262,0.24 ],
+[ 0.052,0.148,0.143,0.187 ],
+[ 0.227,0.058,0.028,0.088 ]];
+
+      canvas.onclick = function(event) {
+          var activePoints = window.myLine.getPointsAtEvent(event);
+
+          if(activePoints.length) { // If there are points on the clicked-upon line.
+              // Use the below line to view the data.
+              // alert(JSON.stringify(activePoints));
+              
+              // Display a "Data Summary" for the selected week.
+              var week = activePoints[0].label;
+              var thenum = week.replace( /^\D+/g, '');
+              <!-- statHeader.innerHTML = "Data Summary: " + week; -->
+              statHeader.innerHTML = "Data Summary: Week " + thenum; 
+              statContainer.innerHTML = "";
+              for(var index in activePoints) {
+                  var point = activePoints[index];
+                  statContainer.innerHTML += point.datasetLabel + ": " + point.value + "<br>";
+                  <!-- statContainer.innerHTML += "INDEX = " + index + "<br>"; -->      
+              } <!-- end for -->
+              statContainer.innerHTML += "<hr>";
+              statContainer.innerHTML += "<h3>Top 4 Factors In Readmission Probability Estimate</h3>";
+              var table = "<table><tbody><tr><th>Factor</th><th>Weight</td></tr>";
+		      for (i = 0; i < 4; i++) {
+                  table += "<tr><td>" + diags[(thenum - 1)][i] + "</td><td> " + loadings[(thenum-1)][i] + "</td></tr>";
+              }
+              table += "</tbody></table>";
+              statContainer.innerHTML += table;
+          } <!-- end if -->
+          
+      };
+
+    </script>
+  </body>
+</html>
